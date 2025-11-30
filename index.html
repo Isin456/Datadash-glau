@@ -1,0 +1,322 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Dash – Analytics Dashboard</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #e5e7eb;
+            padding: 20px;
+        }
+        header {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        h1 { font-size: 28px; color: #38bdf8; }
+        h2 { font-size: 18px; color: #e5e7eb; margin-bottom: 10px; }
+        p { font-size: 14px; color: #9ca3af; }
+
+        .tag {
+            background: #22c55e22;
+            color: #4ade80;
+            border: 1px solid #4ade80;
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 12px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: #020617;
+            border-radius: 12px;
+            padding: 16px 18px;
+            border: 1px solid #1f2937;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+        .badge {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 999px;
+            background: #1e293b;
+            color: #9ca3af;
+        }
+
+        .kpi-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .kpi {
+            background: #020617;
+            border-radius: 10px;
+            border: 1px solid #1f2937;
+            padding: 10px;
+        }
+        .kpi-label {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-bottom: 4px;
+        }
+        .kpi-value {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+        .kpi-change {
+            font-size: 11px;
+            color: #22c55e;
+        }
+        .kpi-change.down {
+            color: #f97373;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 12px;
+        }
+        th, td {
+            text-align: left;
+            padding: 6px 4px;
+        }
+        th {
+            color: #9ca3af;
+            border-bottom: 1px solid #1f2937;
+            font-weight: 600;
+        }
+        tr:nth-child(even) td {
+            background: #020617;
+        }
+
+        .pill {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 999px;
+        }
+        .pill-good { background: #22c55e22; color: #4ade80; }
+        .pill-mid { background: #eab30822; color: #facc15; }
+        .pill-bad { background: #f9737322; color: #fca5a5; }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 11px;
+            color: #6b7280;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        @media (max-width: 900px) {
+            .grid { grid-template-columns: 1fr; }
+            .kpi-row { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .kpi-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-title">
+            <span class="tag">Data Visualization | Analytics</span>
+            <h1>DATA DASH</h1>
+            <p>Interactive analytics dashboard built for the Data Dash event.</p>
+        </div>
+        <div>
+            <p style="font-size:13px; margin-bottom:4px;">Event: Data Dash • AB‑12 Room 1005</p>
+            <p style="font-size:12px;">31st January • 11:00 AM – 3:00 PM</p>
+        </div>
+    </header>
+
+    <div class="grid">
+        <!-- Left: KPIs + Performance -->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Key Event KPIs</h2>
+                    <span class="badge">Live Snapshot</span>
+                </div>
+                <p>High‑level metrics to track registrations, attendance, and engagement in real time.</p>
+                <div class="kpi-row">
+                    <div class="kpi">
+                        <div class="kpi-label">Total Registrations</div>
+                        <div class="kpi-value" id="kpi-registrations">120</div>
+                        <div class="kpi-change" id="kpi-registrations-change">+15 today</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">Teams Shortlisted</div>
+                        <div class="kpi-value" id="kpi-teams">18</div>
+                        <div class="kpi-change">Screening completed</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">Avg. Dashboard Score</div>
+                        <div class="kpi-value" id="kpi-score">7.8</div>
+                        <div class="kpi-change">/ 10</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="kpi-label">On‑time Submissions</div>
+                        <div class="kpi-value" id="kpi-ontime">91%</div>
+                        <div class="kpi-change">vs 85% target</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top:16px;">
+                <div class="card-header">
+                    <h2>Team Performance Snapshot</h2>
+                    <span class="badge">Judging Criteria View</span>
+                </div>
+                <p>Scores across creativity, storytelling, technical skills, and overall user experience.</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th>Tool</th>
+                            <th>Creativity (30%)</th>
+                            <th>Storytelling (30%)</th>
+                            <th>Technical (20%)</th>
+                            <th>UX (20%)</th>
+                            <th>Total / 10</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teams-table-body">
+                        <!-- Filled by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Right: Event details + filters -->
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <h2>Event Overview</h2>
+                    <span class="badge">Info</span>
+                </div>
+                <ul style="list-style:none; font-size:13px; color:#9ca3af; display:grid; gap:6px;">
+                    <li>• Objective: Showcase interactive dashboards built using Excel, Power BI, or Tableau.</li>
+                    <li>• Team size: Up to 3 members; solo participation allowed.</li>
+                    <li>• Screening round: Common dataset, basic dashboard submission, shortlisting for finals.</li>
+                    <li>• Final round: Dataset provided on the spot by judges; 5–7 minutes per presentation.</li>
+                    <li>• Judging criteria: Creativity, visualization & storytelling, technical complexity, and UX.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="margin-top:16px;">
+                <div class="card-header">
+                    <h2>Filter by Tool</h2>
+                    <span class="badge">Interactive</span>
+                </div>
+                <p>Select a tool to highlight teams using that technology.</p>
+                <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+                    <button class="pill pill-good" onclick="filterTeams('All')">All</button>
+                    <button class="pill pill-mid" onclick="filterTeams('Excel')">Excel</button>
+                    <button class="pill pill-mid" onclick="filterTeams('Power BI')">Power BI</button>
+                    <button class="pill pill-mid" onclick="filterTeams('Tableau')">Tableau</button>
+                </div>
+                <p id="filter-label" style="margin-top:10px; font-size:12px; color:#9ca3af;">
+                    Showing all teams.
+                </p>
+            </div>
+
+            <div class="card" style="margin-top:16px;">
+                <div class="card-header">
+                    <h2>Prizes & Recognition</h2>
+                    <span class="badge">Rewards</span>
+                </div>
+                <ul style="list-style:none; font-size:13px; color:#9ca3af; display:grid; gap:6px;">
+                    <li>• 1st Place: ₹7,000</li>
+                    <li>• 2nd Place: ₹5,000</li>
+                    <li>• 3rd Place: ₹3,000</li>
+                    <li>• Certificates and portfolio‑ready dashboards for all finalists.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span>Built as a sample GitHub Pages web app. Commit this file as <code>index.html</code> to your repository.</span>
+        <span>Tools allowed: Excel, Power BI, Tableau, Canva (for presentation).</span>
+    </div>
+
+    <script>
+        // Sample data for teams (you can edit this)
+        const teams = [
+            { name: "Team Alpha", tool: "Power BI", creativity: 26, storytelling: 25, technical: 17, ux: 18 },
+            { name: "Data Ninjas", tool: "Tableau", creativity: 24, storytelling: 23, technical: 18, ux: 19 },
+            { name: "Excel Masters", tool: "Excel", creativity: 22, storytelling: 21, technical: 15, ux: 16 },
+            { name: "Viz Wizards", tool: "Tableau", creativity: 27, storytelling: 26, technical: 19, ux: 18 },
+            { name: "BI Squad", tool: "Power BI", creativity: 25, storytelling: 24, technical: 16, ux: 17 }
+        ];
+
+        function computeTotal(t) {
+            const total100 = t.creativity + t.storytelling + t.technical + t.ux;
+            return (total100 / 10).toFixed(1); // scale to /10
+        }
+
+        function getPillClass(score) {
+            if (score >= 8.5) return "pill-good";
+            if (score >= 7) return "pill-mid";
+            return "pill-bad";
+        }
+
+        function renderTeams(filterTool = "All") {
+            const body = document.getElementById("teams-table-body");
+            body.innerHTML = "";
+            const filtered = teams.filter(t => filterTool === "All" || t.tool === filterTool);
+
+            filtered.forEach(t => {
+                const total = parseFloat(computeTotal(t));
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${t.name}</td>
+                    <td>${t.tool}</td>
+                    <td>${t.creativity}</td>
+                    <td>${t.storytelling}</td>
+                    <td>${t.technical}</td>
+                    <td>${t.ux}</td>
+                    <td><span class="pill ${getPillClass(total)}">${total}</span></td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        function filterTeams(tool) {
+            renderTeams(tool);
+            const label = document.getElementById("filter-label");
+            label.textContent = tool === "All"
+                ? "Showing all teams."
+                : `Showing only teams using ${tool}.`;
+        }
+
+        // Initialize table
+        renderTeams();
+    </script>
+</body>
+</html>
